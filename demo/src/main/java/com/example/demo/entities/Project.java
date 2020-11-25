@@ -1,21 +1,28 @@
 package com.example.demo.entities;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.example.demo.exception.NoEntitiesException;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "project",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 public class Project {
 
     @Id
     @GeneratedValue
     private Long id;
+
     @NotBlank(message = "name can't be empty")
-    @Column(unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private Set<Tag> tags = new HashSet<>();
+
 
     public Project(@NotBlank String name) {
         this.name = name;
@@ -23,6 +30,16 @@ public class Project {
 
     public Project() {
     }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void addTag(Tag tag) {
+        tags.add(tag);
+        tag.setProject(this);
+    }
+
 
     public Long getId() {
         return id;
@@ -39,4 +56,5 @@ public class Project {
     public void setName(String name) {
         this.name = name;
     }
+
 }
