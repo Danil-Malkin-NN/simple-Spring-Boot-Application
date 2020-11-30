@@ -4,6 +4,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.ProjectNameTagDto;
 import com.example.demo.entities.Project;
 import com.example.demo.exception.NoEntitiesException;
+import com.example.demo.exception.ValidationTagException;
 import com.example.demo.service.ProjectService;
 import com.example.demo.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,18 @@ public class ProjectController {
 
     @RequestMapping(value = "{id}/Tag/{name}", method = RequestMethod.POST)
     public void addTagInProject(@PathVariable(value = "id") Long id_project,
-                                @PathVariable(value = "name") String name) throws NoEntitiesException {
+                                @PathVariable(value = "name") String name) throws NoEntitiesException, ValidationTagException {
         projectService.addTagInProject(id_project, name);
+    }
+
+    @RequestMapping(value = "{id}/TagValidation", method = RequestMethod.POST)
+    public void addValidationInProject(@PathVariable(value = "id") Long id_project, @RequestBody String name) throws NoEntitiesException {
+        projectService.setValidationInProject(id_project, name);
+    }
+
+    @RequestMapping(value = "{id}/TagValidation", method = RequestMethod.DELETE)
+    public void deleteValidationInProject(@PathVariable(value = "id") Long id_project) throws NoEntitiesException {
+        projectService.deleteValidation(id_project);
     }
 
 }

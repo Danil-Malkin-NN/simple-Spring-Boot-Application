@@ -1,8 +1,6 @@
 package com.example.demo.entities;
 
 
-import com.example.demo.exception.NoEntitiesException;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
@@ -23,12 +21,25 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private Set<Tag> tags = new HashSet<>();
 
+    private String validation = ".*";
 
     public Project(@NotBlank String name) {
         this.name = name;
     }
 
     public Project() {
+    }
+
+    public String getValidation() {
+        return validation;
+    }
+
+    public void setValidation(String validation) {
+        this.validation = validation;
+    }
+
+    public void resetValidationToDefault() {
+        this.validation = ".*";
     }
 
     public Set<Tag> getTags() {
@@ -39,7 +50,6 @@ public class Project {
         tags.add(tag);
         tag.setProject(this);
     }
-
 
     public Long getId() {
         return id;

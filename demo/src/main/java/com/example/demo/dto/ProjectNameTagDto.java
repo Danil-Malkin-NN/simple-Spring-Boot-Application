@@ -8,6 +8,8 @@ public class ProjectNameTagDto {
 
     private String name;
 
+    private String validation;
+
     private Set<TagNameDto> tags;
 
     public Long getId() {
@@ -16,6 +18,14 @@ public class ProjectNameTagDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getValidation() {
+        return validation;
+    }
+
+    public void setValidation(String validation) {
+        this.validation = validation;
     }
 
     public String getName() {
