@@ -2,7 +2,7 @@ package com.example.demo.dto;
 
 import java.util.Set;
 
-public class ProjectNameTagDto {
+public class ProjectNameValidationTagDto {
 
     private Long id;
 

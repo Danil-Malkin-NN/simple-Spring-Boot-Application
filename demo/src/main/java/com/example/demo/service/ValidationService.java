@@ -14,5 +14,4 @@ public class ValidationService {
             throw new ValidationTagException("Invalid tag name");
         }
     }
-
 }

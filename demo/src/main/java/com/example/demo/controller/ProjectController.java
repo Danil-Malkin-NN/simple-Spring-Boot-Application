@@ -1,15 +1,20 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.dto.ProjectNameTagDto;
+import com.example.demo.dto.ProjectNameValidationTagDto;
 import com.example.demo.entities.Project;
 import com.example.demo.exception.NoEntitiesException;
 import com.example.demo.exception.ValidationTagException;
 import com.example.demo.service.ProjectService;
-import com.example.demo.service.TagService;
+import com.example.demo.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -18,8 +23,9 @@ public class ProjectController {
 
     @Autowired
     ProjectService projectService;
+
     @Autowired
-    TagService tagService;
+    ReportService reportService;
 
     @RequestMapping(method = RequestMethod.POST)
     public void addProject(@RequestParam(value = "name") String name) {
@@ -32,7 +38,7 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ProjectNameTagDto getProject(@PathVariable(value = "id") Long id) throws NoEntitiesException {
+    public ProjectNameValidationTagDto getProject(@PathVariable(value = "id") Long id) throws NoEntitiesException {
         return projectService.getProjectDto(id);
     }
 
@@ -55,6 +61,18 @@ public class ProjectController {
     @RequestMapping(value = "{id}/TagValidation", method = RequestMethod.DELETE)
     public void deleteValidationInProject(@PathVariable(value = "id") Long id_project) throws NoEntitiesException {
         projectService.deleteValidation(id_project);
+    }
+
+    @RequestMapping(value = "{id}/Report", method = RequestMethod.GET)
+    public @ResponseBody
+    ResponseEntity<?> createReport(@PathVariable(value = "id") Long id) throws NoEntitiesException, IOException {
+        ProjectNameValidationTagDto project = projectService.getProjectDto(id);
+        byte[] response = reportService.getReportFile(project);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + project.getName() + ".txt\"");
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        headers.setContentLength(response.length);
+        return new ResponseEntity<byte[]>(response, headers, HttpStatus.OK);
     }
 
 }
