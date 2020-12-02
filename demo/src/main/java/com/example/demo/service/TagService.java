@@ -19,5 +19,4 @@ public class TagService {
     public void deleteTag(Long id) throws NoEntitiesException {
         tagRepository.delete(getTag(id));
     }
-
 }
