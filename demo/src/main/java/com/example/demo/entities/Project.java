@@ -27,7 +27,8 @@ public class Project {
         this.name = name;
     }
 
-    public Project() {}
+    public Project() {
+    }
 
     public String getValidation() {
         return validation;
