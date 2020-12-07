@@ -19,4 +19,24 @@ public class TagService {
     public void deleteTag(Long id) throws NoEntitiesException {
         tagRepository.delete(getTag(id));
     }
+
+    public void setCountForTag(Long id, Integer count) throws NoEntitiesException {
+        Tag tag = getTag(id);
+        tag.setCount(count);
+        tagRepository.save(tag);
+    }
+
+    public void setPriceForTag(Long id, Integer price) throws NoEntitiesException {
+        Tag tag = getTag(id);
+        tag.setPrice(price);
+        tagRepository.save(tag);
+    }
+
+    public Integer getCount(Long id) throws NoEntitiesException {
+        return getTag(id).getCount();
+    }
+
+    public Integer getPrice(Long id) throws NoEntitiesException {
+        return getTag(id).getPrice();
+    }
 }

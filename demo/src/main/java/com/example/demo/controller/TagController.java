@@ -3,10 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.exception.NoEntitiesException;
 import com.example.demo.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/Tag")
@@ -20,4 +17,24 @@ public class TagController {
         tagService.deleteTag(id);
     }
 
+    @RequestMapping(value = "{id}/count", method = RequestMethod.POST)
+    public void setCountForTag(@PathVariable(value = "id") Long id, @RequestParam(value = "count") Integer count) throws NoEntitiesException {
+        tagService.setCountForTag(id, count);
+    }
+
+    @RequestMapping(value = "{id}/price", method = RequestMethod.POST)
+    public void setPriceForTag(@PathVariable(value = "id") Long id, @RequestParam(value = "price") Integer price) throws NoEntitiesException {
+        tagService.setPriceForTag(id, price);
+    }
+
+
+    @RequestMapping(value = "{id}/count", method = RequestMethod.GET)
+    public Integer getCountForTag(@PathVariable(value = "id") Long id) throws NoEntitiesException {
+        return tagService.getCount(id);
+    }
+
+    @RequestMapping(value = "{id}/price", method = RequestMethod.GET)
+    public Integer getPriceForTag(@PathVariable(value = "id") Long id) throws NoEntitiesException {
+        return tagService.getPrice(id);
+    }
 }
