@@ -3,14 +3,17 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.ProjectNameValidationTagDto;
 import com.example.demo.entities.Project;
+import com.example.demo.exception.FormatNotFoundException;
 import com.example.demo.exception.NoEntitiesException;
 import com.example.demo.exception.ValidationTagException;
+import com.example.demo.service.ProjectReport;
 import com.example.demo.service.ProjectService;
-import com.example.demo.service.ReportService;
+import com.example.demo.service.SelectorReportService;
+import com.example.demo.utilities.HeadersUtilities;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +28,7 @@ public class ProjectController {
     ProjectService projectService;
 
     @Autowired
-    ReportService reportService;
+    SelectorReportService selectorReportService;
 
     @RequestMapping(method = RequestMethod.POST)
     public void addProject(@RequestParam(value = "name") String name) {
@@ -64,15 +67,13 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "{id}/Report", method = RequestMethod.GET)
-    public @ResponseBody
-    ResponseEntity<?> createReport(@PathVariable(value = "id") Long id) throws NoEntitiesException, IOException {
+    public ResponseEntity<?> createReport(@PathVariable(value = "id") Long id, @RequestParam String format) throws NoEntitiesException, IOException, InvalidFormatException, FormatNotFoundException {
         ProjectNameValidationTagDto project = projectService.getProjectDto(id);
-        byte[] response = reportService.getReportFile(project);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + project.getName() + ".txt\"");
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        headers.setContentLength(response.length);
-        return new ResponseEntity<byte[]>(response, headers, HttpStatus.OK);
+        ProjectReport projectReport = selectorReportService.getProjectReport(format);
+        byte[] response = projectReport.generateReport(project);
+        HttpHeaders httpHeaders = HeadersUtilities.getHttpHeaders(project.getName(), format);
+        return new ResponseEntity<byte[]>(response, httpHeaders, HttpStatus.OK);
+
     }
 
 }
