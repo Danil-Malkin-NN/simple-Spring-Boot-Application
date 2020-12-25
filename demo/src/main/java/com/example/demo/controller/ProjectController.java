@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-
 import com.example.demo.dto.ProjectNameValidationTagDto;
 import com.example.demo.entities.Project;
 import com.example.demo.exception.FormatNotFoundException;
@@ -10,7 +9,6 @@ import com.example.demo.service.ProjectReport;
 import com.example.demo.service.ProjectService;
 import com.example.demo.service.SelectorReportService;
 import com.example.demo.utilities.HeadersUtilities;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -67,7 +65,7 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "{id}/Report", method = RequestMethod.GET)
-    public ResponseEntity<?> createReport(@PathVariable(value = "id") Long id, @RequestParam String format) throws NoEntitiesException, IOException, InvalidFormatException, FormatNotFoundException {
+    public ResponseEntity<?> createReport(@PathVariable(value = "id") Long id, @RequestParam String format) throws NoEntitiesException, IOException, FormatNotFoundException {
         ProjectNameValidationTagDto project = projectService.getProjectDto(id);
         ProjectReport projectReport = selectorReportService.getProjectReport(format);
         byte[] response = projectReport.generateReport(project);
@@ -75,5 +73,6 @@ public class ProjectController {
         return new ResponseEntity<byte[]>(response, httpHeaders, HttpStatus.OK);
 
     }
+
 
 }

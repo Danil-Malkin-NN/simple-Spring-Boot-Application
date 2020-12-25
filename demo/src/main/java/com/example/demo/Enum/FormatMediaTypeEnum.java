@@ -1,26 +1,23 @@
 package com.example.demo.Enum;
 
-import com.example.demo.exception.FormatNotFoundException;
-
 import java.util.Arrays;
 
 public enum FormatMediaTypeEnum {
 
     TEXT("txt", "text/plain"),
-    XLS("xls", "application/vnd.ms-excel");
+    XLS("xls", "application/vnd.ms-excel"),
+    DEFAULT("def", "application/octet-stream");
 
-    private String format;
-    private String mediaType;
+    private final String format;
+    private final String mediaType;
 
     FormatMediaTypeEnum(String format, String mediaType) {
         this.format = format;
         this.mediaType = mediaType;
     }
 
-    public static String getMediaTypeByFormat(String format) throws FormatNotFoundException {
-        return Arrays.stream(FormatMediaTypeEnum.values())
-                .filter(formatMediaTypeEnum -> formatMediaTypeEnum.format.equals(format))
-                .findFirst().orElseThrow(() -> new FormatNotFoundException("Format is not found")).mediaType;
+    public static String getMediaTypeByFormat(String format) {
+        return Arrays.stream(FormatMediaTypeEnum.values()).filter(formatMediaTypeEnum -> formatMediaTypeEnum.format.equals(format)).findFirst().orElse(DEFAULT).getFormat();
     }
 
     public String getFormat() {
