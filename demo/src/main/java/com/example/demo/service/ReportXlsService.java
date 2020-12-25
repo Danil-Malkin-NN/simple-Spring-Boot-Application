@@ -15,9 +15,11 @@ import java.nio.file.Files;
 
 @Service(value = "ProjectReport_xls")
 public class ReportXlsService implements ProjectReport {
+
     @Override
     public byte[] generateReport(ProjectNameValidationTagDto projectDto) throws IOException {
         String format = ".xls";
+        File tmpFile = File.createTempFile(projectDto.getName() + format, null);
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("Project");
         Row row;
@@ -33,9 +35,12 @@ public class ReportXlsService implements ProjectReport {
             cell.setCellValue(tag.getName());
             i++;
         }
-        FileOutputStream outFile = new FileOutputStream(projectDto.getName() + format);
+        FileOutputStream outFile = new FileOutputStream(tmpFile);
         workbook.write(outFile);
         workbook.close();
-        return Files.readAllBytes(new File(projectDto.getName() + format).toPath());
+        outFile.close();
+        byte[] result = Files.readAllBytes(tmpFile.toPath());
+        tmpFile.delete();
+        return result;
     }
 }
