@@ -1,0 +1,23 @@
+image: node:latest
+
+stages:
+  - build
+  - cleanup
+
+build-backend:
+  tags:
+    - shell
+  stage: build
+  script:
+    - cd demo
+    - mvn -DskipTests clean install
+
+cleanup_backend_runner:
+  tags:
+    - shell
+  stage: cleanup
+  script:
+    - docker system prune -f
+  needs: ["build-backend"]
+
+  
