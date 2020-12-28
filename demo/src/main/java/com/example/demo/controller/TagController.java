@@ -27,7 +27,6 @@ public class TagController {
         tagService.setPriceForTag(id, price);
     }
 
-
     @RequestMapping(value = "{id}/count", method = RequestMethod.GET)
     public Integer getCountForTag(@PathVariable(value = "id") Long id) throws NoEntitiesException {
         return tagService.getCount(id);
@@ -37,4 +36,5 @@ public class TagController {
     public Integer getPriceForTag(@PathVariable(value = "id") Long id) throws NoEntitiesException {
         return tagService.getPrice(id);
     }
+
 }

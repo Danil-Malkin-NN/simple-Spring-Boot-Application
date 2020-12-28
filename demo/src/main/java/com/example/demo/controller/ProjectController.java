@@ -3,11 +3,10 @@ package com.example.demo.controller;
 import com.example.demo.dto.ProjectNameValidationTagDto;
 import com.example.demo.entities.Project;
 import com.example.demo.exception.FormatNotFoundException;
+import com.example.demo.exception.ModuleNotSupportedException;
 import com.example.demo.exception.NoEntitiesException;
 import com.example.demo.exception.ValidationTagException;
-import com.example.demo.service.ProjectReport;
-import com.example.demo.service.ProjectService;
-import com.example.demo.service.SelectorReportService;
+import com.example.demo.service.*;
 import com.example.demo.utilities.HeadersUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +26,9 @@ public class ProjectController {
 
     @Autowired
     SelectorReportService selectorReportService;
+
+    @Autowired
+    SelectorProjectModule selectorProjectModule;
 
     @RequestMapping(method = RequestMethod.POST)
     public void addProject(@RequestParam(value = "name") String name) {
@@ -65,7 +67,10 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "{id}/Report", method = RequestMethod.GET)
-    public ResponseEntity<?> createReport(@PathVariable(value = "id") Long id, @RequestParam String format) throws NoEntitiesException, IOException, FormatNotFoundException {
+    public ResponseEntity<?> createReport(@PathVariable(value = "id") Long id, @RequestParam String format) throws
+                                                                                                            NoEntitiesException,
+                                                                                                            IOException,
+                                                                                                            FormatNotFoundException {
         ProjectNameValidationTagDto project = projectService.getProjectDto(id);
         ProjectReport projectReport = selectorReportService.getProjectReport(format);
         byte[] response = projectReport.generateReport(project);
@@ -74,5 +79,12 @@ public class ProjectController {
 
     }
 
+    @RequestMapping(value = "{id}/Module/{moduleName}", method = RequestMethod.GET)
+    public String moduleAction(@PathVariable(value = "id") Long id,
+                                       @PathVariable(value = "moduleName") String moduleName) throws NoEntitiesException, ModuleNotSupportedException {
+        Project project = projectService.getProject(id);
+        ProjectModule projectModule = selectorProjectModule.getModule(moduleName);
+        return projectModule.projectCheck(project);
+    }
 
 }
