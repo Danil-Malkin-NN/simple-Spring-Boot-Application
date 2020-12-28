@@ -59,4 +59,5 @@ public class ProjectService {
         project.resetValidationToDefault();
         projectRepository.save(project);
     }
+
 }
