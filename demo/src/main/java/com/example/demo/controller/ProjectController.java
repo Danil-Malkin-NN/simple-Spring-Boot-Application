@@ -30,6 +30,7 @@ public class ProjectController {
     @Autowired
     SelectorProjectModule selectorProjectModule;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST)
     public void addProject(@RequestParam(value = "name") String name) {
         projectService.addProject(new Project(name));
@@ -50,6 +51,7 @@ public class ProjectController {
         projectService.deleteProject(id);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "{id}/Tag/{name}", method = RequestMethod.POST)
     public void addTagInProject(@PathVariable(value = "id") Long id_project,
                                 @PathVariable(value = "name") String name) throws NoEntitiesException, ValidationTagException {
