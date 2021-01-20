@@ -2,6 +2,9 @@ package com.example.demo.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Currency {
 
     @JsonProperty("Value")

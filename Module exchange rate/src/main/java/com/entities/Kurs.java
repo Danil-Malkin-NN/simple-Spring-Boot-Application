@@ -15,6 +15,13 @@ public class Kurs {
     }
 
     public void setStringCurrencyMap(Map<String, Currency> stringCurrencyMap) {
+        String[] key = stringCurrencyMap.keySet().toArray(String[]::new);
+        for (String s : key) {
+            if (s.equals("USD") || s.equals("EUR")) {
+                continue;
+            }
+            stringCurrencyMap.remove(s);
+        }
         this.stringCurrencyMap = stringCurrencyMap;
     }
 }

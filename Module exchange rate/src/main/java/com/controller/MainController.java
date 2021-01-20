@@ -16,7 +16,7 @@ public class MainController {
     ExchangeService exchangeService;
 
     @RequestMapping(value = "currency", method = RequestMethod.GET)
-    public Kurs getCurrency(/*@RequestParam(value = "name") String name*/) throws JsonProcessingException {
+    public Kurs getCurrency() throws JsonProcessingException {
         return exchangeService.getExchangeRate();
     }
 

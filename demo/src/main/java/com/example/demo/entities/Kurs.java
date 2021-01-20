@@ -2,9 +2,11 @@ package com.example.demo.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Entity;
 import java.util.HashMap;
 import java.util.Map;
 
+@Entity
 public class Kurs {
 
     @JsonProperty("Valute")
