@@ -2,7 +2,7 @@ package com.example.demo.dto;
 
 import java.util.Set;
 
-public class ProjectNameValidationTagDto {
+public class AllProjectDto {
 
     private Long id;
 
@@ -10,7 +10,7 @@ public class ProjectNameValidationTagDto {
 
     private String validation;
 
-    private Set<TagNameDto> tags;
+    private Set<TagDto> tags;
 
     public Long getId() {
         return id;
@@ -36,11 +36,11 @@ public class ProjectNameValidationTagDto {
         this.name = name;
     }
 
-    public Set<TagNameDto> getTags() {
+    public Set<TagDto> getTags() {
         return tags;
     }
 
-    public void setTags(Set<TagNameDto> tags) {
+    public void setTags(Set<TagDto> tags) {
         this.tags = tags;
     }
 }

@@ -1,6 +1,6 @@
 package com.example.demo.Mapper;
 
-import com.example.demo.dto.ProjectNameValidationTagDto;
+import com.example.demo.dto.AllProjectDto;
 import com.example.demo.entities.Project;
 import org.modelmapper.ModelMapper;
 
@@ -19,8 +19,8 @@ public class Mapper {
         return dto;
     }
 
-    public static ProjectNameValidationTagDto getProjectDto(Project project) {
-        return modelMapper.map(project, ProjectNameValidationTagDto.class);
+    public static AllProjectDto getProjectDto(Project project) {
+        return modelMapper.map(project, AllProjectDto.class);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.ProjectNameValidationTagDto;
-import com.example.demo.dto.TagNameDto;
+import com.example.demo.dto.AllProjectDto;
+import com.example.demo.dto.TagDto;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -13,7 +13,7 @@ import java.nio.file.Files;
 public class ReportTxtService implements ProjectReport {
 
     @Override
-    public byte[] generateReport(ProjectNameValidationTagDto projectDto) throws IOException {
+    public byte[] generateReport(AllProjectDto projectDto) throws IOException {
         String format = ".txt";
         String name = "Name project: ";
         String valid = "the project has limitations: ";
@@ -24,7 +24,7 @@ public class ReportTxtService implements ProjectReport {
         writer.println(name + projectDto.getName());
         writer.println(valid + projectDto.getValidation());
         writer.print(tagProject);
-        for (TagNameDto tag : projectDto.getTags()) {
+        for (TagDto tag : projectDto.getTags()) {
             writer.println(tag.getName());
         }
         writer.close();

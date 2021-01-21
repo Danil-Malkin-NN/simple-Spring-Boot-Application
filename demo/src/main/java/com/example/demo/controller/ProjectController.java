@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ProjectNameValidationTagDto;
+import com.example.demo.dto.AllProjectDto;
 import com.example.demo.entities.Project;
 import com.example.demo.exception.FormatNotFoundException;
 import com.example.demo.exception.ModuleNotSupportedException;
@@ -42,7 +42,7 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ProjectNameValidationTagDto getProject(@PathVariable(value = "id") Long id) throws NoEntitiesException {
+    public AllProjectDto getProject(@PathVariable(value = "id") Long id) throws NoEntitiesException {
         return projectService.getProjectDto(id);
     }
 
@@ -73,7 +73,7 @@ public class ProjectController {
                                                                                                             NoEntitiesException,
                                                                                                             IOException,
                                                                                                             FormatNotFoundException {
-        ProjectNameValidationTagDto project = projectService.getProjectDto(id);
+        AllProjectDto project = projectService.getProjectDto(id);
         ProjectReport projectReport = selectorReportService.getProjectReport(format);
         byte[] response = projectReport.generateReport(project);
         HttpHeaders httpHeaders = HeadersUtilities.getHttpHeaders(project.getName(), format);

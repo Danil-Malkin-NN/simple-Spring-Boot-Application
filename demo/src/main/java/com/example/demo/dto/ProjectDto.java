@@ -1,6 +1,6 @@
 package com.example.demo.dto;
 
-public class TagNameDto {
+public class ProjectDto {
 
     private Long id;
 
