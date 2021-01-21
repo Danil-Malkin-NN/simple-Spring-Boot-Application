@@ -22,22 +22,33 @@ public class ExchangeService {
 
     @PostConstruct
     public void getExchangeRate() throws JsonProcessingException {
-        String str = "";
-        try {
-            str = WebClient.create()
-                    .get()
-                    .uri(URI).retrieve()
-                    .bodyToMono(String.class)
-                    .block();
-        } catch (WebClientException e) {
-            System.out.println(e.getClass());
-        }
+        Runnable runnable = new Runnable() {
+            public void run() {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        Kurs kurs = objectMapper.readValue(str, Kurs.class);
+                String str = "";
+                try {
+                    str = WebClient.create()
+                            .get()
+                            .uri(URI).retrieve()
+                            .bodyToMono(String.class)
+                            .block();
+                } catch (WebClientException e) {
+                    System.out.println(e.getClass());
+                }
 
-        kursRepository.save(kurs);
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+                Kurs kurs = null;
+                try {
+                    kurs = objectMapper.readValue(str, Kurs.class);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+
+                kursRepository.save(kurs);
+            }
+        };
+        runnable.run();
     }
 
 }

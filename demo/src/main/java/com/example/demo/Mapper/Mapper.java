@@ -22,5 +22,4 @@ public class Mapper {
     public static AllProjectDto getProjectDto(Project project) {
         return modelMapper.map(project, AllProjectDto.class);
     }
-
 }

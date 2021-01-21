@@ -15,6 +15,7 @@ public class Currency {
     @Column(name = "id")
     private Long id;
 
+    //@Id
     @JsonProperty("CharCode")
     @Column(name = "name")
     private String name;

@@ -24,7 +24,6 @@ public class ExchangeService {
         Kurs kurs = objectMapper.readValue(str, Kurs.class);
 
         return kurs;
-//        return JsonMapper.getKurs(json);
     }
 
 }
