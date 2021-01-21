@@ -2,13 +2,15 @@ package com.example.demo.service;
 
 import com.example.demo.Mapper.Mapper;
 import com.example.demo.dto.TagNameDto;
-import com.example.demo.entities.Kurs;
+import com.example.demo.entities.Currency;
 import com.example.demo.entities.Tag;
 import com.example.demo.exception.NoEntitiesException;
-import com.example.demo.repositories.KursRepository;
+import com.example.demo.repositories.CurrencyRepository;
 import com.example.demo.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TagService {
@@ -17,7 +19,7 @@ public class TagService {
     TagRepository tagRepository;
 
     @Autowired
-    KursRepository kursRepository;
+    CurrencyRepository currencyRepository;
 
     public Tag getTag(Long id) throws NoEntitiesException {
         return tagRepository.findById(id).orElseThrow(() -> new NoEntitiesException("Tag not found"));
@@ -48,12 +50,12 @@ public class TagService {
     }
 
     public TagNameDto getPrice(Long id) throws NoEntitiesException {
-        TagNameDto tagNameDto = getTagDto(id);
-        Kurs kurs = kursRepository.findById(1L).get();
-        Double USD = kurs.getStringCurrencyMap().get("USD").getValue();
-        Double EUR = kurs.getStringCurrencyMap().get("EUR").getValue();
-        tagNameDto.setUSD((tagNameDto.getPrice() / USD));
-        tagNameDto.setEUR(tagNameDto.getPrice() / EUR);
+        PriceTagDto priceTagDto = getTagDto(id);
+        List<Currency> currencyList = currencyRepository.findAll();
+        for (Currency c : currencyList) {
+            c.getValue()
+            priceTagDto.put(c.getName(), priceTagDto.getPrice( / c.getValue()))
+        }
 
         return tagNameDto;
     }

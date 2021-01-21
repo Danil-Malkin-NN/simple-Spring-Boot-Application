@@ -1,7 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.entities.Currency;
 import com.example.demo.entities.Kurs;
-import com.example.demo.repositories.KursRepository;
+import com.example.demo.repositories.CurrencyRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,12 +12,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ExchangeService {
 
     @Autowired
-    KursRepository kursRepository;
+    CurrencyRepository currencyRepository;
 
     private final String URI = "http://localhost:8081/Exchange/currency";
 
@@ -44,8 +47,12 @@ public class ExchangeService {
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
+                List<Currency> currencyList = new ArrayList<>();
+                for (String k : kurs.getStringCurrencyMap().keySet()) {
+                    currencyList.add(kurs.getStringCurrencyMap().get(k));
+                }
 
-                kursRepository.save(kurs);
+                currencyRepository.saveAll(currencyList);
             }
         };
         runnable.run();

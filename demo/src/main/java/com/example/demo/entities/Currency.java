@@ -4,18 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class Currency {
 
     @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private Long id;
-
-    //@Id
     @JsonProperty("CharCode")
     @Column(name = "name")
     private String name;
@@ -34,12 +28,12 @@ public class Currency {
         this.value = value;
     }
 
-    public Long getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getNominal() {
