@@ -1,13 +1,12 @@
 package com.example.demo.dto;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class PriceTagDto extends TagDto {
 
     private Integer count = 0;
 
-    private Map<String, Double> prices = new HashMap<>();
+    private final Map<String, Double> prices = Map.of("RUB", 0.0);
 
     public Integer getCount() {
         return count;
@@ -21,7 +20,7 @@ public class PriceTagDto extends TagDto {
         return prices;
     }
 
-    public void setPrices(Map<String, Double> prices) {
-        this.prices = prices;
+    public void setPrices(Integer prices) {
+        this.prices.put("RUB", prices.doubleValue());
     }
 }

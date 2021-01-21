@@ -1,7 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.Mapper.Mapper;
-import com.example.demo.dto.TagNameDto;
+import com.example.demo.dto.PriceTagDto;
+import com.example.demo.dto.TagDto;
 import com.example.demo.entities.Currency;
 import com.example.demo.entities.Tag;
 import com.example.demo.exception.NoEntitiesException;
@@ -25,8 +26,8 @@ public class TagService {
         return tagRepository.findById(id).orElseThrow(() -> new NoEntitiesException("Tag not found"));
     }
 
-    public TagNameDto getTagDto(Long id) throws NoEntitiesException {
-        return Mapper.getTagDto(getTag(id));
+    public TagDto getTagDto(Long id) throws NoEntitiesException {
+        return Mapper.modelMapper.map(getTag(id), TagDto.class);
     }
 
     public void deleteTag(Long id) throws NoEntitiesException {
@@ -49,14 +50,13 @@ public class TagService {
         return getTag(id).getCount();
     }
 
-    public TagNameDto getPrice(Long id) throws NoEntitiesException {
-        PriceTagDto priceTagDto = getTagDto(id);
+    public PriceTagDto getPrice(Long id) throws NoEntitiesException {
+        PriceTagDto priceTagDto = Mapper.modelMapper.map(getTag(id), PriceTagDto.class);
         List<Currency> currencyList = currencyRepository.findAll();
         for (Currency c : currencyList) {
-            c.getValue()
-            priceTagDto.put(c.getName(), priceTagDto.getPrice( / c.getValue()))
+            priceTagDto.getPrices().put(c.getName(), priceTagDto.getPrices().get("RUB") / c.getValue());
         }
 
-        return tagNameDto;
+        return priceTagDto;
     }
 }

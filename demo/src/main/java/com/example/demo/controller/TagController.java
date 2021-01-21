@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.TagNameDto;
+import com.example.demo.dto.PriceTagDto;
 import com.example.demo.exception.NoEntitiesException;
 import com.example.demo.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class TagController {
     }
 
     @RequestMapping(value = "{id}/price", method = RequestMethod.GET)
-    public TagNameDto getPriceForTag(@PathVariable(value = "id") Long id) throws NoEntitiesException {
+    public PriceTagDto getPriceForTag(@PathVariable(value = "id") Long id) throws NoEntitiesException {
         return tagService.getPrice(id);
     }
 
