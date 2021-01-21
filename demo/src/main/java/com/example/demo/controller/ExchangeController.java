@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/Exchange")
-public class ExchangeProject {
+public class ExchangeController {
 
     @Autowired
     ExchangeService exchangeService;
 
     @RequestMapping(method = RequestMethod.GET)
     public void getExchangeRate() throws JsonProcessingException {
-        /*return*/
         exchangeService.getExchangeRate();
     }
 
