@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.TagNameDto;
 import com.example.demo.exception.NoEntitiesException;
 import com.example.demo.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,9 @@ public class TagController {
     }
 
     @RequestMapping(value = "{id}/count", method = RequestMethod.POST)
-    public void setCountForTag(@PathVariable(value = "id") Long id, @RequestParam(value = "count") Integer count) throws NoEntitiesException {
+    public void setCountForTag(@PathVariable(value = "id") Long id, @RequestParam(value = "count") Integer count) throws
+                                                                                                                  NoEntitiesException {
         tagService.setCountForTag(id, count);
-    }
-
-    @RequestMapping(value = "{id}/price", method = RequestMethod.POST)
-    public void setPriceForTag(@PathVariable(value = "id") Long id, @RequestParam(value = "price") Integer price) throws NoEntitiesException {
-        tagService.setPriceForTag(id, price);
     }
 
     @RequestMapping(value = "{id}/count", method = RequestMethod.GET)
@@ -32,8 +29,14 @@ public class TagController {
         return tagService.getCount(id);
     }
 
+    @RequestMapping(value = "{id}/price", method = RequestMethod.POST)
+    public void setPriceForTag(@PathVariable(value = "id") Long id, @RequestParam(value = "price") Integer price) throws
+                                                                                                                  NoEntitiesException {
+        tagService.setPriceForTag(id, price);
+    }
+
     @RequestMapping(value = "{id}/price", method = RequestMethod.GET)
-    public Integer getPriceForTag(@PathVariable(value = "id") Long id) throws NoEntitiesException {
+    public TagNameDto getPriceForTag(@PathVariable(value = "id") Long id) throws NoEntitiesException {
         return tagService.getPrice(id);
     }
 
