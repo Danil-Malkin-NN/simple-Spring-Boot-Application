@@ -1,7 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.Mapper.Mapper;
-import com.example.demo.dto.ProjectNameValidationTagDto;
+import com.example.demo.dto.AllProjectDto;
+import com.example.demo.dto.ProjectDto;
 import com.example.demo.entities.Project;
 import com.example.demo.entities.Tag;
 import com.example.demo.exception.NoEntitiesException;
@@ -29,12 +30,12 @@ public class ProjectService {
         return projectRepository.findById(id).orElseThrow(() -> new NoEntitiesException("Project not found"));
     }
 
-    public ProjectNameValidationTagDto getProjectDto(Long id) throws NoEntitiesException {
+    public AllProjectDto getProjectDto(Long id) throws NoEntitiesException {
         return Mapper.getProjectDto(getProject(id));
     }
 
     public List<?> getProjectList() {
-        return Mapper.getDtoList(projectRepository.findAll(), ProjectNameValidationTagDto.class);
+        return Mapper.getDtoList(projectRepository.findAll(), ProjectDto.class);
     }
 
     public void deleteProject(Long id) throws NoEntitiesException {
