@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Currency {
 
+    @JsonProperty("CharCode")
+    private String name;
+
     @JsonProperty("Value")
     private double value;
 
