@@ -1,15 +1,15 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.Kurs;
 import com.example.demo.entities.Currency;
-import com.example.demo.entities.Kurs;
 import com.example.demo.repositories.CurrencyRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.server.WebServerException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientException;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -35,13 +35,13 @@ public class ExchangeService {
                             .uri(URI).retrieve()
                             .bodyToMono(String.class)
                             .block();
-                } catch (WebClientException e) {
+                } catch (WebServerException e) {
                     System.out.println(e.getClass());
                 }
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-                Kurs kurs = null;
+                Kurs kurs = new Kurs();
                 try {
                     kurs = objectMapper.readValue(str, Kurs.class);
                 } catch (JsonProcessingException e) {

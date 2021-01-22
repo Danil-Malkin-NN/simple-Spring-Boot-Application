@@ -1,10 +1,14 @@
-package com.example.demo.entities;
+package com.example.demo.dto;
+
+import com.example.demo.entities.Currency;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Kurs {
 
+    @JsonProperty("Valute")
     private Map<String, Currency> stringCurrencyMap = new HashMap<>();
 
     public Map<String, Currency> getStringCurrencyMap() {

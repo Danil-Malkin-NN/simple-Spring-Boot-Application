@@ -51,10 +51,13 @@ public class TagService {
     }
 
     public PriceTagDto getPrice(Long id) throws NoEntitiesException {
+        Mapper mapper = new Mapper();
         PriceTagDto priceTagDto = Mapper.modelMapper.map(getTag(id), PriceTagDto.class);
         List<Currency> currencyList = currencyRepository.findAll();
+        Double rub = priceTagDto.getPrices().get("RUB");
         for (Currency c : currencyList) {
-            priceTagDto.getPrices().put(c.getName(), priceTagDto.getPrices().get("RUB") / c.getValue());
+            priceTagDto.getPrices().put(c.getName(), rub / c.getValue());
+            System.out.println(priceTagDto.getPrices().get("RUB") / c.getValue());
         }
 
         return priceTagDto;

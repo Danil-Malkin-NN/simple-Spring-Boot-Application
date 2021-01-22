@@ -1,12 +1,13 @@
 package com.example.demo.dto;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class PriceTagDto extends TagDto {
 
     private Integer count = 0;
 
-    private final Map<String, Double> prices = Map.of("RUB", 0.0);
+    private final Map<String, Double> prices = new HashMap<>();
 
     public Integer getCount() {
         return count;
