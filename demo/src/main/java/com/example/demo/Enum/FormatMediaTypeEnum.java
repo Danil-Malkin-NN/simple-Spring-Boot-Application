@@ -17,7 +17,7 @@ public enum FormatMediaTypeEnum {
     }
 
     public static String getMediaTypeByFormat(String format) {
-        return Arrays.stream(FormatMediaTypeEnum.values()).filter(formatMediaTypeEnum -> formatMediaTypeEnum.format.equals(format)).findFirst().orElse(DEFAULT).getFormat();
+        return Arrays.stream(FormatMediaTypeEnum.values()).filter(formatMediaTypeEnum -> formatMediaTypeEnum.format.equals(format)).findFirst().orElse(DEFAULT).getMediaType();
     }
 
     public String getFormat() {
