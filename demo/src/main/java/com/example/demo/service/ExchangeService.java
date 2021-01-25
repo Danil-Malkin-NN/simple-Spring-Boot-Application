@@ -4,13 +4,10 @@ import com.example.demo.dto.Kurs;
 import com.example.demo.entities.Currency;
 import com.example.demo.repositories.CurrencyRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.WebServerException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientException;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -27,40 +24,33 @@ public class ExchangeService {
     @PostConstruct
     public void getExchangeRate() throws JsonProcessingException {
 
-        Runnable runnable = new Runnable() {
-            public void run() {
+//        try {
 
-                String str = "";
-                try {
-                    str = WebClient.create()
-                            .get()
-                            .uri(URI).retrieve()
-                            .bodyToMono(String.class)
-                            .block();
-                } catch (WebClientException | WebServerException e) {
-                    System.out.println(e.getStackTrace());
-                }
+//        } catch (WebClientException | WebServerException e) {
+//            System.out.println(e.getStackTrace());
+//        }
 
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-                Kurs kurs = new Kurs();
-                if (str != null || !str.isEmpty()) {
-                    try {
-                        kurs = objectMapper.readValue(str, Kurs.class);
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
-                    List<Currency> currencyList = new ArrayList<>();
-                    for (String k : kurs.getStringCurrencyMap().keySet()) {
-                        currencyList.add(kurs.getStringCurrencyMap().get(k));
-                    }
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+//        if (str != null || !str.isEmpty()) {
+//            try {
+//                kurs = objectMapper.readValue(str, Kurs.class);
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//                }
+        ResponseEntity<Kurs> kurs = WebClient.create()
+                .get()
+                .uri(URI).retrieve()
+                .toEntity(Kurs.class).block();
 
-                    currencyRepository.saveAll(currencyList);
-                }
+        if (kurs.getStatusCode().is2xxSuccessful()) {
 
+            List<Currency> currencyList = new ArrayList<>();
+            for (String k : kurs.getBody().getStringCurrencyMap().keySet()) {
+                currencyList.add(kurs.getBody().getStringCurrencyMap().get(k));
             }
-        };
-        runnable.run();
+            currencyRepository.saveAll(currencyList);
+        }
     }
 
 }
