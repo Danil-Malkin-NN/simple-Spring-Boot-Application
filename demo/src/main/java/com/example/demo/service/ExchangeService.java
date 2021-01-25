@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientException;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class ExchangeService {
 
     @PostConstruct
     public void getExchangeRate() throws JsonProcessingException {
+
         Runnable runnable = new Runnable() {
             public void run() {
 
@@ -35,24 +37,27 @@ public class ExchangeService {
                             .uri(URI).retrieve()
                             .bodyToMono(String.class)
                             .block();
-                } catch (WebServerException e) {
-                    System.out.println(e.getClass());
+                } catch (WebClientException | WebServerException e) {
+                    System.out.println(e.getStackTrace());
                 }
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
                 Kurs kurs = new Kurs();
-                try {
-                    kurs = objectMapper.readValue(str, Kurs.class);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-                List<Currency> currencyList = new ArrayList<>();
-                for (String k : kurs.getStringCurrencyMap().keySet()) {
-                    currencyList.add(kurs.getStringCurrencyMap().get(k));
+                if (str != null || !str.isEmpty()) {
+                    try {
+                        kurs = objectMapper.readValue(str, Kurs.class);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                    List<Currency> currencyList = new ArrayList<>();
+                    for (String k : kurs.getStringCurrencyMap().keySet()) {
+                        currencyList.add(kurs.getStringCurrencyMap().get(k));
+                    }
+
+                    currencyRepository.saveAll(currencyList);
                 }
 
-                currencyRepository.saveAll(currencyList);
             }
         };
         runnable.run();

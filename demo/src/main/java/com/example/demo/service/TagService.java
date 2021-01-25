@@ -8,9 +8,11 @@ import com.example.demo.entities.Tag;
 import com.example.demo.exception.NoEntitiesException;
 import com.example.demo.repositories.CurrencyRepository;
 import com.example.demo.repositories.TagRepository;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
@@ -21,6 +23,19 @@ public class TagService {
 
     @Autowired
     CurrencyRepository currencyRepository;
+
+    @PostConstruct
+    public void setupMapper() {
+        Mapper.modelMapper.addMappings(new PropertyMap<Tag, PriceTagDto>() {
+            @Override
+            protected void configure() {
+                map().setId(source.getId());
+                map().setCount(source.getCount());
+                map().setName(source.getName());
+                map().setPrices(source.getPrice());
+            }
+        });
+    }
 
     public Tag getTag(Long id) throws NoEntitiesException {
         return tagRepository.findById(id).orElseThrow(() -> new NoEntitiesException("Tag not found"));
@@ -51,13 +66,11 @@ public class TagService {
     }
 
     public PriceTagDto getPrice(Long id) throws NoEntitiesException {
-        Mapper mapper = new Mapper();
         PriceTagDto priceTagDto = Mapper.modelMapper.map(getTag(id), PriceTagDto.class);
         List<Currency> currencyList = currencyRepository.findAll();
         Double rub = priceTagDto.getPrices().get("RUB");
         for (Currency c : currencyList) {
             priceTagDto.getPrices().put(c.getName(), rub / c.getValue());
-            System.out.println(priceTagDto.getPrices().get("RUB") / c.getValue());
         }
 
         return priceTagDto;

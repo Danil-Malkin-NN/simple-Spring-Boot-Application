@@ -20,4 +20,10 @@ public class MainController {
         return exchangeService.getExchangeRate();
     }
 
+    @RequestMapping(value = "RestTemplate", method = RequestMethod.GET)
+    public Kurs getRest() throws JsonProcessingException {
+        return exchangeService.getExchangeRateRestTemplate();
+
+    }
+
 }
