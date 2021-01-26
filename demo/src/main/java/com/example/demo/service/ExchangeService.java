@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientException;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -23,18 +24,22 @@ public class ExchangeService {
 
     @PostConstruct
     public void getExchangeRate() throws JsonProcessingException {
-        ResponseEntity<Rate> kurs = WebClient.create()
-                .get()
-                .uri(URI).retrieve()
-                .toEntity(Rate.class).block();
+        try {
+            ResponseEntity<Rate> kurs = WebClient.create()
+                    .get()
+                    .uri(URI).retrieve()
+                    .toEntity(Rate.class).block();
 
-        if (kurs.getStatusCode().is2xxSuccessful()) {
+            if (kurs.getStatusCode().is2xxSuccessful()) {
 
-            List<Currency> currencyList = new ArrayList<>();
-            for (String k : kurs.getBody().getStringCurrencyMap().keySet()) {
-                currencyList.add(kurs.getBody().getStringCurrencyMap().get(k));
+                List<Currency> currencyList = new ArrayList<>();
+                for (String k : kurs.getBody().getStringCurrencyMap().keySet()) {
+                    currencyList.add(kurs.getBody().getStringCurrencyMap().get(k));
+                }
+                currencyRepository.saveAll(currencyList);
             }
-            currencyRepository.saveAll(currencyList);
+        } catch (WebClientException e) {
+            e.printStackTrace();
         }
     }
 
