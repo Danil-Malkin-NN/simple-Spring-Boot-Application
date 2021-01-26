@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.Kurs;
+import com.example.demo.dto.Rate;
 import com.example.demo.entities.Currency;
 import com.example.demo.repositories.CurrencyRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,10 +23,10 @@ public class ExchangeService {
 
     @PostConstruct
     public void getExchangeRate() throws JsonProcessingException {
-        ResponseEntity<Kurs> kurs = WebClient.create()
+        ResponseEntity<Rate> kurs = WebClient.create()
                 .get()
                 .uri(URI).retrieve()
-                .toEntity(Kurs.class).block();
+                .toEntity(Rate.class).block();
 
         if (kurs.getStatusCode().is2xxSuccessful()) {
 

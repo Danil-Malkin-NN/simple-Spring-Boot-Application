@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @Service
 public class SelectorReportService {
 
@@ -20,7 +19,6 @@ public class SelectorReportService {
         if (projectReport == null)
             throw new FormatNotFoundException("Format " + format + " not supported");
         return projectReport;
-
 
     }
 

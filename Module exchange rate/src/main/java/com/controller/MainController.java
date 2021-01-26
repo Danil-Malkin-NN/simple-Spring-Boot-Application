@@ -1,6 +1,6 @@
 package com.controller;
 
-import com.entities.Kurs;
+import com.entities.Rate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.service.ExchangeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class MainController {
     ExchangeService exchangeService;
 
     @RequestMapping(value = "currency", method = RequestMethod.GET)
-    public Kurs getCurrency() throws JsonProcessingException {
+    public Rate getCurrency() throws JsonProcessingException {
         return exchangeService.getExchangeRate();
     }
 

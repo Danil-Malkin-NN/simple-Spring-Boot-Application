@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Kurs {
+public class Rate {
 
     @JsonProperty("Valute")
     private Map<String, Currency> stringCurrencyMap = new HashMap<>();

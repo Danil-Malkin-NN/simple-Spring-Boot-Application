@@ -1,6 +1,6 @@
 package com.service;
 
-import com.entities.Kurs;
+import com.entities.Rate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class ExchangeService {
     private final String URI = "https://www.cbr-xml-daily.ru/daily_json.js";
 
-    public Kurs getExchangeRate() throws JsonProcessingException {
+    public Rate getExchangeRate() throws JsonProcessingException {
         String str = "";
         ResponseEntity<String> entity = WebClient.create()
                 .get()
@@ -23,8 +23,8 @@ public class ExchangeService {
             str = entity.getBody();
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-            Kurs kurs = objectMapper.readValue(str, Kurs.class);
-            return kurs;
+            Rate rate = objectMapper.readValue(str, Rate.class);
+            return rate;
         }
         return null;
 
