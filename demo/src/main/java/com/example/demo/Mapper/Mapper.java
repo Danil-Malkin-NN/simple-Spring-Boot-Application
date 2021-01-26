@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Mapper {
-    static ModelMapper modelMapper = new ModelMapper();
+    public static ModelMapper modelMapper = new ModelMapper();
 
     public static List<?> getDtoList(List<?> list, Type dtoClass) {
         List<?> dto = new ArrayList<>();
