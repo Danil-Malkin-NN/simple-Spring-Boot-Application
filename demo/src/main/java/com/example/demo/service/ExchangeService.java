@@ -23,21 +23,6 @@ public class ExchangeService {
 
     @PostConstruct
     public void getExchangeRate() throws JsonProcessingException {
-
-//        try {
-
-//        } catch (WebClientException | WebServerException e) {
-//            System.out.println(e.getStackTrace());
-//        }
-
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-//        if (str != null || !str.isEmpty()) {
-//            try {
-//                kurs = objectMapper.readValue(str, Kurs.class);
-//            } catch (JsonProcessingException e) {
-//                e.printStackTrace();
-//                }
         ResponseEntity<Kurs> kurs = WebClient.create()
                 .get()
                 .uri(URI).retrieve()
