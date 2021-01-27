@@ -33,7 +33,7 @@ public class ExchangeService {
                     .get()
                     .uri(URI).retrieve()
                     .toEntity(Rate.class).block();
-
+            logger.info(kurs.toString());
             if (kurs.getStatusCode().is2xxSuccessful()) {
 
                 List<Currency> currencyList = new ArrayList<>();
@@ -41,10 +41,10 @@ public class ExchangeService {
                     currencyList.add(kurs.getBody().getStringCurrencyMap().get(k));
                 }
                 currencyRepository.saveAll(currencyList);
-                logger.info("Эта запись будет залогирована");
+                logger.info("Data received and saved successfully");
             }
         } catch (WebClientException e) {
-            e.printStackTrace();
+            logger.error("Request error, no data received", e);
         }
     }
 
