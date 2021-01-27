@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="socket.host">${bundle:application:logstash.host}</Property>
+        <Property name="socket.port">${bundle:application:logstash.port}</Property>
+        <Property name="console.thresholdFilter">${bundle:application:logger.console.tresholdFilter}</Property>
+        <Property name="socket.thresholdFilter">${bundle:application:logger.socket.tresholdFilter}</Property>
+    </Properties>
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <ThresholdFilter level="${console.thresholdFilter}"/>
+            <PatternLayout pattern="%d %-5p [%t] %c{10} - %m%n"/>
+        </Console>
+        <Socket name="SOCKET" host="${socket.host}" port="${socket.port}" immediateFlush="true">
+            <ThresholdFilter level="${socket.thresholdFilter}"/>
+            <JSONLayout eventEol="true" compact="true"/>
+        </Socket>
+        <Async name="ASYNC">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="SOCKET"/>
+        </Async>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="ru.example" level="debug" additivity="false">
+            <AppenderRef ref="ASYNC"/>
+        </Logger>
+        <Root level="error">
+            <AppenderRef ref="ASYNC"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -16,12 +16,22 @@
 
     <properties>
         <java.version>11</java.version>
+        <logstash.host>logstashcsm.example.ru</logstash.host>
+        <logstash.port>10000</logstash.port>
+        <logger.console.tresholdFilter>ALL</logger.console.tresholdFilter>
+        <logger.socket.tresholdFilter>ALL</logger.socket.tresholdFilter>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -73,6 +83,11 @@
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>2.3.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
 

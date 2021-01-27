@@ -4,6 +4,8 @@ import com.example.demo.dto.Rate;
 import com.example.demo.entities.Currency;
 import com.example.demo.repositories.CurrencyRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ public class ExchangeService {
 
     private final String URI = "http://localhost:8081/Exchange/currency";
 
+    private static final Logger logger = LoggerFactory.getLogger(ExchangeService.class);
+
     @PostConstruct
     public void getExchangeRate() throws JsonProcessingException {
         try {
@@ -37,6 +41,7 @@ public class ExchangeService {
                     currencyList.add(kurs.getBody().getStringCurrencyMap().get(k));
                 }
                 currencyRepository.saveAll(currencyList);
+                logger.info("Эта запись будет залогирована");
             }
         } catch (WebClientException e) {
             e.printStackTrace();
