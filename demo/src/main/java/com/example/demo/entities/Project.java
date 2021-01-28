@@ -19,7 +19,7 @@ public class Project {
     private String name;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private Set<Tag> tags = new HashSet<>();
+    private final Set<Tag> tags = new HashSet<>();
 
     private String validation = ".*";
 
@@ -67,4 +67,12 @@ public class Project {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", validation='" + validation + '\'' +
+                '}';
+    }
 }

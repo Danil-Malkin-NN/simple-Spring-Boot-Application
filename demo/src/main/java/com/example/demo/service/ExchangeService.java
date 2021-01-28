@@ -33,18 +33,19 @@ public class ExchangeService {
                     .get()
                     .uri(URI).retrieve()
                     .toEntity(Rate.class).block();
-            logger.info(kurs.toString());
+
             if (kurs.getStatusCode().is2xxSuccessful()) {
+                logger.info("Course received successfully");
 
                 List<Currency> currencyList = new ArrayList<>();
                 for (String k : kurs.getBody().getStringCurrencyMap().keySet()) {
                     currencyList.add(kurs.getBody().getStringCurrencyMap().get(k));
                 }
                 currencyRepository.saveAll(currencyList);
-                logger.info("Data received and saved successfully");
+                logger.info("Data saved successfully in DB");
             }
         } catch (WebClientException e) {
-            logger.error("Request error, no data received", e);
+            logger.error("Request error, no data received " + e.getLocalizedMessage());
         }
     }
 

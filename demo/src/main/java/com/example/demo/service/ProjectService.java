@@ -28,50 +28,50 @@ public class ProjectService {
     ValidationService validationService;
 
     public void addProject(Project project) {
-        logger.info("Add project " + project.toString());
         projectRepository.save(project);
+        logger.info("Add Project " + project.toString());
     }
 
     public Project getProject(Long id) throws NoEntitiesException {
-        logger.info("Find project by id: " + id);
         return projectRepository.findById(id).orElseThrow(() -> new NoEntitiesException("Project not found"));
     }
 
     public AllProjectDto getProjectDto(Long id) throws NoEntitiesException {
-        logger.info("Convert Project into " + AllProjectDto.class.getName());
         return Mapper.getProjectDto(getProject(id));
     }
 
     public List<?> getProjectList() {
-        logger.info("Get list Project ");
         return Mapper.getDtoList(projectRepository.findAll(), ProjectDto.class);
     }
 
     public void deleteProject(Long id) throws NoEntitiesException {
-        logger.info("Delete Project " + id);
         projectRepository.delete(getProject(id));
+        logger.info("Delete Project - " + id);
+
     }
 
     public void addTagInProject(Long id_project, AllTagDto tagDto) throws NoEntitiesException, ValidationTagException {
-        logger.info(String.format("Add Tag in Project id_project = %d tag ", id_project, tagDto.toString()));
         Project project = getProject(id_project);
         validationService.validate(tagDto.getName(), project);
         project.addTag(Mapper.modelMapper.map(tagDto, Tag.class));
         projectRepository.save(project);
+        logger.info(String.format("Added a tag - %s to the Project - %s", tagDto.toString(), project.toString()));
+
     }
 
     public void setValidationInProject(Long id_project, String name) throws NoEntitiesException {
-        logger.info(String.format("Set validation in Project id = %d validation = %s ", id_project, name));
         Project project = getProject(id_project);
         project.setValidation(name);
         projectRepository.save(project);
+        logger.info(String.format("Set validation in Project id - %s", project.toString()));
     }
 
     public void deleteValidation(Long id_project) throws NoEntitiesException {
-        logger.info(String.format("Delete Validation Project id = %d"), id_project);
         Project project = getProject(id_project);
         project.resetValidationToDefault();
         projectRepository.save(project);
+        logger.info(String.format("Removed verification Project - %s", project.toString()));
+
     }
 
 }
