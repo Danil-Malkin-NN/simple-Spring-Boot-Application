@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.Mapper.Mapper;
 import com.example.demo.dto.AllProjectDto;
-import com.example.demo.dto.AllTagDto;
 import com.example.demo.dto.ProjectDto;
 import com.example.demo.entities.Project;
 import com.example.demo.entities.Tag;
@@ -50,13 +49,12 @@ public class ProjectService {
 
     }
 
-    public void addTagInProject(Long id_project, AllTagDto tagDto) throws NoEntitiesException, ValidationTagException {
+    public void addTagInProject(Long id_project, String name) throws NoEntitiesException, ValidationTagException {
         Project project = getProject(id_project);
-        validationService.validate(tagDto.getName(), project);
-        project.addTag(Mapper.modelMapper.map(tagDto, Tag.class));
+        validationService.validate(name, project);
+        project.addTag(new Tag(name));
         projectRepository.save(project);
-        logger.info(String.format("Added a tag - %s to the Project - %s", tagDto.toString(), project.toString()));
-
+        logger.info(String.format("Added a tag - %s to the Project - %s", name, project.toString()));
     }
 
     public void setValidationInProject(Long id_project, String name) throws NoEntitiesException {
