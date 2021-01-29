@@ -6,6 +6,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -15,6 +17,8 @@ import java.nio.file.Files;
 
 @Service(value = "ProjectReport_xls")
 public class ReportXlsService implements ProjectReport {
+
+    private static final Logger logger = LoggerFactory.getLogger(ReportTxtService.class);
 
     @Override
     public byte[] generateReport(AllProjectDto projectDto) throws IOException {
@@ -41,6 +45,7 @@ public class ReportXlsService implements ProjectReport {
         outFile.close();
         byte[] result = Files.readAllBytes(tmpFile.toPath());
         tmpFile.delete();
+        logger.info("Report in xls format has been successfully created from the project - " + projectDto.toString());
         return result;
     }
 }

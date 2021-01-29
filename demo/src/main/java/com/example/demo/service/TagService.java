@@ -9,6 +9,8 @@ import com.example.demo.exception.NoEntitiesException;
 import com.example.demo.repositories.CurrencyRepository;
 import com.example.demo.repositories.TagRepository;
 import org.modelmapper.PropertyMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ import java.util.List;
 
 @Service
 public class TagService {
+
+    private static final Logger logger = LoggerFactory.getLogger(CountAllTagProjectModule.class);
 
     @Autowired
     TagRepository tagRepository;
@@ -35,6 +39,7 @@ public class TagService {
                 map().setPrices(source.getPrice());
             }
         });
+        logger.info("Mapper setting");
     }
 
     public Tag getTag(Long id) throws NoEntitiesException {
@@ -47,6 +52,7 @@ public class TagService {
 
     public void deleteTag(Long id) throws NoEntitiesException {
         tagRepository.delete(getTag(id));
+        logger.info("Removed tag id = " + id);
     }
 
     public void setCountForTag(Long id, Integer count) throws NoEntitiesException {
