@@ -15,7 +15,7 @@
     <description>Demo project for Spring Boot</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>12</java.version>
         <logstash.host>logstashcsm.example.ru</logstash.host>
         <logstash.port>10000</logstash.port>
         <logger.console.tresholdFilter>ALL</logger.console.tresholdFilter>
